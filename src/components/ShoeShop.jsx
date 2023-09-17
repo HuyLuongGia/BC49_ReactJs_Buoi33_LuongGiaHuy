@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ProductList from "./ProductList";
 import ProductDetail from "./ProductDetail";
+import Cart from "./Cart";
 
 export default class ShoeShop extends Component {
     state = {
@@ -151,6 +152,9 @@ export default class ShoeShop extends Component {
             },
         ],
         productDetail: null,
+        showModalDetail: false,
+        showShoppingCart: false,
+        listShoeCart: [],
     };
 
     getProductDetail = (product) => {
@@ -159,15 +163,64 @@ export default class ShoeShop extends Component {
         });
     };
 
+    handleCloseModalDetail = () => {
+        this.setState({
+            showModalDetail: false,
+        });
+    };
+
+    handleOpenModalDetail = () => {
+        this.setState({
+            showModalDetail: true,
+        });
+    };
+
+    handleCloseCart = () => {
+        this.setState({
+            showShoppingCart: false,
+        });
+    };
+
+    handleAddToCart = (product) => {
+        // console.log("ShoeShop", product);
+        this.setState({
+            listShoeCart: [...this.state.listShoeCart, product],
+        });
+    };
+
     render() {
         return (
             <div className="container">
                 <h1>Shoe Shop</h1>
+                <button
+                    className="btn btn-success mt-4 mb-4"
+                    onClick={() => {
+                        this.setState({
+                            showShoppingCart: true,
+                        });
+                    }}
+                >
+                    Shopping Cart
+                    <i className="fa fa-shopping-cart ms-2"></i>
+                </button>
                 <ProductList
                     listProduct={this.state.arrShoe}
                     onGetProductDetail={this.getProductDetail}
+                    onOpenModalDetail={this.handleOpenModalDetail}
+                    onAddToCart={this.handleAddToCart}
                 />
-                <ProductDetail shoeDetail={this.state.productDetail} />
+                {this.state.showModalDetail && (
+                    <ProductDetail
+                        shoeDetail={this.state.productDetail}
+                        onCloseModalDetail={this.handleCloseModalDetail}
+                    />
+                )}
+                {this.state.showShoppingCart && (
+                    <Cart
+                        onCloseCart={this.handleCloseCart}
+                        dataCart={this.state.listShoeCart}
+                    />
+                )}
             </div>
         );
     }

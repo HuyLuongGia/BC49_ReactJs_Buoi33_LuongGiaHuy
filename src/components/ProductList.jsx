@@ -6,6 +6,15 @@ export default class ProductList extends Component {
         // console.log(product);
         this.props.onGetProductDetail(product);
     };
+
+    handleOpenModalDetail = () => {
+        this.props.onOpenModalDetail();
+    };
+
+    handleAddToCartFromItem = (product) => {
+        this.props.onAddToCart(product);
+    };
+
     render() {
         // console.log(this.props);
         let { listProduct } = this.props;
@@ -18,6 +27,8 @@ export default class ProductList extends Component {
                             <ProductItem
                                 itemProduct={item}
                                 onGetProductDetail={this.handleProductDetail}
+                                onOpenDetail={this.handleOpenModalDetail}
+                                onAddToCart={this.handleAddToCartFromItem}
                             />
                         </div>
                     );
